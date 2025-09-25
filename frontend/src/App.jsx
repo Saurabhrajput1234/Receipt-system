@@ -28,11 +28,11 @@ function App() {
     restAmount: "",
   });
 
-  // API base URL - use proxy in development, direct URL in production
-  const API_BASE =
-    process.env.NODE_ENV === "production"
+  // API base URL - use environment variable or fallback
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 
+    (import.meta.env.VITE_NODE_ENV === "production"
       ? "http://localhost:5000/api"
-      : "/api";
+      : "/api");
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -353,7 +353,7 @@ function App() {
             />
           </div>
           <div className="company-info">
-            <h1>SUBH SANKALP ESTATE PVT. LTD.</h1>
+            <h1>{import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}</h1>
             <p className="address">
               The Grover Square, 2nd Floor, Near Maruti Showroom,
               <br />
@@ -411,7 +411,7 @@ function App() {
                 />
               </div>
               <div className="print-company-info">
-                <h1>SUBH SANKALP ESTATE PVT. LTD.</h1>
+                <h1>{import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}</h1>
                 <h1>TOKEN RECEIPT</h1>
               </div>
             </div>
@@ -690,7 +690,7 @@ function App() {
               </div>
               <div className="signature">
                 <p>
-                  <strong>SUBH SANKALP ESTATE PVT. LTD.</strong>
+                  <strong>{import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}</strong>
                 </p>
                 <div className="signature-box">
                   <p>(Authorised Signatory)</p>

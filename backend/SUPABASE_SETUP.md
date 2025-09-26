@@ -41,10 +41,11 @@ SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 4. Copy and paste the following SQL:
 
 ```sql
--- Clean database schema with only fields used in frontend
+-- Clean database schema with receipt types support
 CREATE TABLE IF NOT EXISTS receipts (
   id BIGSERIAL PRIMARY KEY,
   receipt_no VARCHAR(50),
+  receipt_type VARCHAR(20) DEFAULT 'token',
   date DATE,
   from_name VARCHAR(255),
   relation_type VARCHAR(10) DEFAULT 'S/O',
@@ -79,9 +80,12 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
 CREATE INDEX IF NOT EXISTS idx_receipts_receipt_no ON receipts(receipt_no);
 CREATE INDEX IF NOT EXISTS idx_receipts_created_at ON receipts(created_at);
 
--- Add constraint for relation_type
+-- Add constraints
 ALTER TABLE receipts ADD CONSTRAINT check_relation_type
   CHECK (relation_type IN ('S/O', 'D/O', 'W/O'));
+
+ALTER TABLE receipts ADD CONSTRAINT check_receipt_type
+  CHECK (receipt_type IN ('token', 'banking', 'emi'));
 ```
 
 5. Click "Run" to execute the SQL

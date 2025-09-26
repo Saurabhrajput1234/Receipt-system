@@ -10,6 +10,7 @@ class Receipt {
 CREATE TABLE IF NOT EXISTS receipts (
   id BIGSERIAL PRIMARY KEY,
   receipt_no VARCHAR(50),
+  receipt_type VARCHAR(20) DEFAULT 'token',
   date DATE,
   from_name VARCHAR(255),
   relation_type VARCHAR(10) DEFAULT 'S/O',
@@ -51,6 +52,7 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
         .insert([
           {
             receipt_no: receiptData.receiptNo,
+            receipt_type: receiptData.receiptType || 'token',
             date: receiptData.date || null,
             from_name: receiptData.fromName,
             relation_type: receiptData.relationType || 'S/O',
@@ -103,6 +105,7 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
       return data.map((receipt) => ({
         id: receipt.id,
         receiptNo: receipt.receipt_no,
+        receiptType: receipt.receipt_type,
         date: receipt.date,
         fromName: receipt.from_name,
         relationType: receipt.relation_type,
@@ -153,6 +156,7 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
       return {
         id: data.id,
         receiptNo: data.receipt_no,
+        receiptType: data.receipt_type,
         date: data.date,
         fromName: data.from_name,
         relationType: data.relation_type,

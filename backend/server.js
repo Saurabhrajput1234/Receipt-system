@@ -15,7 +15,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? ["https://receipt-system-na2c.vercel.app", "http://localhost:5173"] // Add your production domain here
+        ? ["https://receipt-system-na2c.vercel.app", "http://localhost:3000"] // Add your production domain here
         : [
             "http://localhost:3000",
             "http://localhost:5173",

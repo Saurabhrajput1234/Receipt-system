@@ -20,7 +20,7 @@ The frontend uses environment variables to configure various settings. These are
    VITE_NODE_ENV=development
 
    # App Configuration
-   VITE_APP_NAME=Subh Sankalp Estate Receipt System
+   VITE_APP_NAME=SUBH SANKALP ESTATE PVT. LTD.
    VITE_APP_VERSION=1.0.0
    ```
 

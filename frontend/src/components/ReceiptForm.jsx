@@ -430,7 +430,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
                 className="site-select"
               >
                 <option value="">Select Site</option>
-                <option value="Hare H.K.T-2">Hare Krishna Township-2</option>
+                <option value="Hare H.K.T-2">Hare Krishna Township-Phase 2</option>
               </select>
             </label>
           </div>

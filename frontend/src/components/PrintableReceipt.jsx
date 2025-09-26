@@ -220,6 +220,7 @@ const PrintableReceipt = ({ receiptId, onClose }) => {
                   {import.meta.env.VITE_APP_NAME ||
                     "SUBH SANKALP ESTATE PVT. LTD."}
                 </h1>
+                <br />
                 <h1>{getReceiptTitle()}</h1>
               </div>
             </div>
@@ -385,7 +386,7 @@ const PrintableReceipt = ({ receiptId, onClose }) => {
 
           {/* Print-only bottom images */}
           <div className="print-bottom-section">
-            <div style={{ marginTop: "122px" }} className="print-bottom-left">
+            <div style={{ marginTop: "89px" }} className="print-bottom-left">
               <img
                 src="/back.jpg"
                 alt="Receipt Bottom Design"

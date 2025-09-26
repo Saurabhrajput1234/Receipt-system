@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
-  const [formData, setFormData] = useState({
+const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readOnly = false }) => {
+  const [formData, setFormData] = useState(initialData || {
     receiptNo: "",
     receiptType: receiptType || "token",
     date: "",
@@ -20,9 +20,12 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
     other: "",
     cash: "",
     cheque: "",
+    chequeNo: "",
     rtgsNeft: "",
     amount: "",
     restAmount: "",
+    cashChecked: false,
+    chequeChecked: false,
   });
 
   // API base URL - use environment variable or fallback
@@ -57,6 +60,95 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
     }));
   };
 
+  // Function to convert number to words
+  const numberToWords = (num) => {
+    if (!num || isNaN(num)) return "";
+
+    const ones = [
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+    ];
+    const teens = [
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+    const tens = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+    const thousands = ["", "Thousand", "Lakh", "Crore"];
+
+    const convertHundreds = (n) => {
+      let result = "";
+      if (n > 99) {
+        result += ones[Math.floor(n / 100)] + " Hundred ";
+        n %= 100;
+      }
+      if (n > 19) {
+        result += tens[Math.floor(n / 10)] + " ";
+        n %= 10;
+      } else if (n > 9) {
+        result += teens[n - 10] + " ";
+        return result;
+      }
+      if (n > 0) {
+        result += ones[n] + " ";
+      }
+      return result;
+    };
+
+    if (num === 0) return "Zero";
+
+    let numStr = Math.floor(num).toString();
+    let result = "";
+    let groupIndex = 0;
+
+    // Handle Indian numbering system (crores, lakhs, thousands)
+    while (numStr.length > 0) {
+      let groupSize = groupIndex === 0 ? 3 : 2; // First group is 3 digits, rest are 2
+      if (groupIndex === 0 && numStr.length < 3) groupSize = numStr.length;
+      if (groupIndex > 0 && numStr.length < 2) groupSize = numStr.length;
+
+      let group = numStr.slice(-groupSize);
+      numStr = numStr.slice(0, -groupSize);
+
+      if (parseInt(group) > 0) {
+        result =
+          convertHundreds(parseInt(group)) +
+          thousands[groupIndex] +
+          " " +
+          result;
+      }
+      groupIndex++;
+    }
+
+    return result.trim() + " Only";
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -73,6 +165,14 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
 
       const formattedExpiryDate = expiryDate.toISOString().split("T")[0];
       updatedData.tokenExpiryDate = formattedExpiryDate;
+    }
+
+    // Convert amount to words when amount is changed
+    if (name === "amount" && value) {
+      const numericValue = parseFloat(value);
+      if (!isNaN(numericValue)) {
+        updatedData.receivedAmount = numberToWords(numericValue);
+      }
     }
 
     setFormData(updatedData);
@@ -100,9 +200,12 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
       other: "",
       cash: "",
       cheque: "",
+      chequeNo: "",
       rtgsNeft: "",
       amount: "",
       restAmount: "",
+      cashChecked: false,
+      chequeChecked: false,
     });
   };
 
@@ -174,6 +277,8 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
             <h1>
               {import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}
             </h1>
+            <br />
+
             <h1>{getReceiptTitle()}</h1>
           </div>
         </div>
@@ -190,7 +295,8 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
                   type="text"
                   name="receiptNo"
                   value={formData.receiptNo}
-                  onChange={handleInputChange}
+                  readOnly
+                  className="receipt-no-readonly"
                 />
                 {/* <button
                   type="button"
@@ -210,6 +316,23 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
                 value={formData.date}
                 onChange={handleInputChange}
               />
+            </label>
+            <label>
+              Token Expiry Date:
+              <div className="expiry-date-container">
+                <input
+                  type="date"
+                  name="tokenExpiryDate"
+                  value={formData.tokenExpiryDate}
+                  onChange={handleInputChange}
+                  className="expiry-date-input"
+                />
+                <span className="expiry-note">
+                  {formData.date && formData.tokenExpiryDate
+                    ? "(Auto: +7 days)"
+                    : "(Manual entry)"}
+                </span>
+              </div>
             </label>
           </div>
         </div>
@@ -266,30 +389,13 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
           </div>
           <div className="form-row">
             <label>
-              Mobile:
+              Mobile Number:
               <input
                 type="tel"
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
               />
-            </label>
-            <label>
-              Token Expiry Date:
-              <div className="expiry-date-container">
-                <input
-                  type="date"
-                  name="tokenExpiryDate"
-                  value={formData.tokenExpiryDate}
-                  onChange={handleInputChange}
-                  className="expiry-date-input"
-                />
-                <span className="expiry-note">
-                  {formData.date && formData.tokenExpiryDate
-                    ? "(Auto: +7 days)"
-                    : "(Manual entry)"}
-                </span>
-              </div>
             </label>
           </div>
           <div className="form-row">
@@ -304,21 +410,56 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
             </label>
           </div>
           <div className="form-row">
-            <label>
+            <label className="form-half">
               Reference Name:
               <input
                 type="text"
                 name="referenceName"
                 value={formData.referenceName}
                 onChange={handleInputChange}
+                placeholder="Reference Name"
+              />
+            </label>
+
+            <label className="form-half">
+              Site Name:
+              <select
+                name="siteName"
+                value={formData.siteName}
+                onChange={handleInputChange}
+                className="site-select"
+              >
+                <option value="">Select Site</option>
+                <option value="Hare H.K.T-2">Hare Krishna Township-2</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="form-row">
+            <label>
+              Plot No:
+              <input
+                type="text"
+                name="plotVillaNo"
+                value={formData.plotVillaNo}
+                onChange={handleInputChange}
               />
             </label>
             <label>
-              Site Name:
+              Plot Size Sq. (yd.):
               <input
                 type="text"
-                name="siteName"
-                value={formData.siteName}
+                name="plotSize"
+                value={formData.plotSize}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Basic Rate:
+              <input
+                type="text"
+                name="basicRate"
+                value={formData.basicRate}
                 onChange={handleInputChange}
               />
             </label>
@@ -327,36 +468,8 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
 
         {/* Payment section */}
         <div className="payment-section">
-          <h3>Payment Mode:</h3>
           <div className="payment-grid">
             <div className="payment-left">
-              <label>
-                Plot:
-                <input
-                  type="text"
-                  name="plotVillaNo"
-                  value={formData.plotVillaNo}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                Plot Size Sq. (yd.):
-                <input
-                  type="text"
-                  name="plotSize"
-                  value={formData.plotSize}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                Basic Rate:
-                <input
-                  type="text"
-                  name="basicRate"
-                  value={formData.basicRate}
-                  onChange={handleInputChange}
-                />
-              </label>
               <label>
                 Amount (Rs.):
                 <input
@@ -366,9 +479,6 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
                   onChange={handleInputChange}
                 />
               </label>
-            </div>
-
-            <div className="payment-middle">
               <label>
                 Other:
                 <input
@@ -380,37 +490,37 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
               </label>
             </div>
 
+            <div className="payment-middle"></div>
+
             <div className="payment-right">
-              <label>
+              <label className="checkbox-label">
                 <input
                   type="checkbox"
                   name="cashChecked"
                   onChange={handleInputChange}
                 />
-                Cash:
-                <input
-                  type="text"
-                  name="cash"
-                  value={formData.cash}
-                  onChange={handleInputChange}
-                  placeholder="Amount"
-                />
+                Cash
               </label>
-              <label>
+              <label className="checkbox-label">
                 <input
                   type="checkbox"
                   name="chequeChecked"
                   onChange={handleInputChange}
                 />
-                Cheque:
-                <input
-                  type="text"
-                  name="cheque"
-                  value={formData.cheque}
-                  onChange={handleInputChange}
-                  placeholder="Amount"
-                />
+                Cheque
               </label>
+              {formData.chequeChecked && (
+                <label>
+                  Cheque No:
+                  <input
+                    type="text"
+                    name="chequeNo"
+                    value={formData.chequeNo}
+                    onChange={handleInputChange}
+                    placeholder="Cheque Number"
+                  />
+                </label>
+              )}
               <label>
                 RTGS / NEFT:
                 <input
@@ -431,6 +541,31 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
               </label>
             </div>
           </div>
+
+          {/* Print-only payment display */}
+          <div className="print-payment-display">
+            <div className="print-payment-row">
+              <span>Other: {formData.other || "___________"}</span>
+              <span>Amount (Rs.): {formData.amount || "___________"}</span>
+              <span>
+                Rest Amount (Rs.): {formData.restAmount || "___________"}
+              </span>
+            </div>
+            <div className="print-payment-methods">
+              <span>Payment Methods:</span>
+              <div className="payment-methods-list">
+                <span>{formData.cashChecked ? "☑" : "☐"} Cash</span>
+                <span>
+                  {formData.chequeChecked ? "☑" : "☐"} Cheque{" "}
+                  {formData.chequeNo ? `(No: ${formData.chequeNo})` : ""}
+                </span>
+                <span>
+                  {formData.rtgsNeft && formData.rtgsNeft.trim() ? "☑" : "☐"}{" "}
+                  RTGS/NEFT: {formData.rtgsNeft || "___________"}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Footer */}
@@ -438,15 +573,11 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
           <div className="terms">
             <h4>Terms & Conditions</h4>
             <ul>
-              <li>Token amount is subject to payment realization.</li>
-              <li>Refund applicable only within 7 days of Token.</li>
+              <li>Token amount will be expire after 7 days</li>
+              <li>Refund applicable within 7 days only</li>
               <li>
-                Post 7 days, booking amount can be adjusted only in the next
-                booking (self booking , referral explanatory), not refunded.
-              </li>
-              <li>Cheque bounce charges ₹500/–.</li>
-              <li>
-                If client remains unresponsive, allotment will be canceled.
+                After token expires,amount can be adjusted only in the next
+                booking (Self,referral), not refunded.
               </li>
             </ul>
           </div>
@@ -481,16 +612,29 @@ const ReceiptForm = ({ receiptType, onSubmit, loading }) => {
         </div>
       </form>
 
-      {/* Print-only bottom image */}
-      <div className="print-bottom-image">
-        <img
-          src="/back.jpg"
-          alt="Receipt Bottom Design"
-          className="receipt-bottom-img"
-          onError={(e) => {
-            e.target.style.display = "none";
-          }}
-        />
+      {/* Print-only bottom images */}
+      <div className="print-bottom-section">
+        <div style={{ marginTop: "122px" }} className="print-bottom-left">
+          <img
+            src="/back.jpg"
+            alt="Receipt Bottom Design"
+            className="receipt-bottom-img"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+        </div>
+        <div className="print-bottom-right">
+          <img
+            src="/address.png"
+            style={{ color: "black" }}
+            alt="Address Information"
+            className="receipt-address-img"
+            onError={(e) => {
+              e.target.style.display = "none";
+            }}
+          />
+        </div>
       </div>
     </div>
   );

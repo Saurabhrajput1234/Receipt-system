@@ -1,4 +1,4 @@
-const ReceiptsList = ({ receipts, loading, onRefresh, onCreateNew }) => {
+const ReceiptsList = ({ receipts, loading, onRefresh, onCreateNew, onPrintReceipt }) => {
   const getReceiptTypeLabel = (type) => {
     switch (type) {
       case 'token': return 'Token';
@@ -49,11 +49,22 @@ const ReceiptsList = ({ receipts, loading, onRefresh, onCreateNew }) => {
                     {getReceiptTypeLabel(receipt.receiptType)}
                   </span>
                 </div>
-                <span className="receipt-date">
-                  {receipt.date
-                    ? new Date(receipt.date).toLocaleDateString()
-                    : "No date"}
-                </span>
+                <div className="receipt-header-right">
+                  <span className="receipt-date">
+                    {receipt.date
+                      ? new Date(receipt.date).toLocaleDateString()
+                      : "No date"}
+                  </span>
+                  <div className="receipt-actions">
+                    <button
+                      className="print-receipt-btn"
+                      onClick={() => onPrintReceipt(receipt.id)}
+                      title="Print this receipt"
+                    >
+                      🖨️ Print
+                    </button>
+                  </div>
+                </div>
               </div>
               
               <div className="receipt-card-content">

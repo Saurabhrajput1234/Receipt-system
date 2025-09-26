@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import ReceiptForm from "./components/ReceiptForm";
 import ReceiptsList from "./components/ReceiptsList";
+import PrintReceiptModal from "./components/PrintReceiptModal";
 
 function App() {
   const [currentView, setCurrentView] = useState("form"); // 'form' or 'list'
   const [currentReceiptType, setCurrentReceiptType] = useState("token"); // 'token', 'banking', 'emi'
   const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [printReceiptId, setPrintReceiptId] = useState(null);
 
   // API base URL - use environment variable or fallback
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 
@@ -160,12 +162,21 @@ function App() {
           loading={loading}
           onRefresh={fetchReceipts}
           onCreateNew={() => setCurrentView("form")}
+          onPrintReceipt={(receiptId) => setPrintReceiptId(receiptId)}
         />
       ) : (
         <ReceiptForm 
           receiptType={currentReceiptType}
           onSubmit={handleSubmit}
           loading={loading}
+        />
+      )}
+
+      {/* Print Modal */}
+      {printReceiptId && (
+        <PrintReceiptModal
+          receiptId={printReceiptId}
+          onClose={() => setPrintReceiptId(null)}
         />
       )}
     </div>

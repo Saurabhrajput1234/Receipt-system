@@ -30,6 +30,9 @@ CREATE TABLE IF NOT EXISTS receipts (
   rtgs_neft DECIMAL(18,2) DEFAULT 0,
   amount DECIMAL(18,2) DEFAULT 0,
   rest_amount DECIMAL(18,2) DEFAULT 0,
+  cash_checked BOOLEAN DEFAULT FALSE,
+  cheque_checked BOOLEAN DEFAULT FALSE,
+  cheque_no VARCHAR(100),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -72,6 +75,9 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
             rtgs_neft: parseFloat(receiptData.rtgsNeft) || 0,
             amount: parseFloat(receiptData.amount) || 0,
             rest_amount: parseFloat(receiptData.restAmount) || 0,
+            cash_checked: Boolean(receiptData.cashChecked),
+            cheque_checked: Boolean(receiptData.chequeChecked),
+            cheque_no: receiptData.chequeNo || null,
           },
         ])
         .select()
@@ -125,6 +131,9 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
         rtgsNeft: receipt.rtgs_neft,
         amount: receipt.amount,
         restAmount: receipt.rest_amount,
+        cashChecked: receipt.cash_checked,
+        chequeChecked: receipt.cheque_checked,
+        chequeNo: receipt.cheque_no,
         createdAt: receipt.created_at,
         updatedAt: receipt.updated_at,
       }));
@@ -176,6 +185,9 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
         rtgsNeft: data.rtgs_neft,
         amount: data.amount,
         restAmount: data.rest_amount,
+        cashChecked: data.cash_checked,
+        chequeChecked: data.cheque_checked,
+        chequeNo: data.cheque_no,
         createdAt: data.created_at,
         updatedAt: data.updated_at,
       };
@@ -223,12 +235,12 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
       }
 
       if (!data || data.length === 0) {
-        // No receipts exist, start from 1
-        return "1";
+        // No receipts exist, start from 0001
+        return "0001";
       }
 
       // Find the highest numeric receipt number
-      let maxNumber = -1;
+      let maxNumber = 0;
       data.forEach((receipt) => {
         const num = parseInt(receipt.receipt_no);
         if (!isNaN(num) && num > maxNumber) {
@@ -236,7 +248,9 @@ CREATE POLICY "Allow all operations on receipts" ON receipts
         }
       });
 
-      return (maxNumber + 1).toString();
+      // Format as 4-digit number with leading zeros
+      const nextNumber = maxNumber + 1;
+      return nextNumber.toString().padStart(4, '0');
     } catch (err) {
       console.error("Error getting next receipt number:", err);
       // Fallback: return timestamp-based number

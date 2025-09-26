@@ -385,7 +385,7 @@ body {
   /* Single full-width labels */
   .form-row label:only-child {
     flex: 1;
-    min-width: 100%;
+    min-width: 50%;
   }
 }
 
@@ -617,14 +617,14 @@ body {
     color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  
+
   /* Eliminate all default margins */
-  .receipt-container > *:first-child {
+  .receipt-container>*:first-child {
     margin-top: 0 !important;
     padding-top: 0 !important;
   }
-  
-  .receipt-container > *:last-child {
+
+  .receipt-container>*:last-child {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
   }
@@ -703,6 +703,14 @@ body {
     margin-top: 0 !important;
     padding-top: 0 !important;
     page-break-inside: avoid;
+    width: 100% !important;
+  }
+
+  .receipt-top-img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
   }
 
   .print-bottom-image {
@@ -915,13 +923,13 @@ body {
     flex-shrink: 0 !important;
   }
 
-  /* Specific spacing for two-field rows */
+  /* Specific spacing for two-field rows - Reduced margins */
   .receipt-container .form-row label:first-child {
-    margin-right: 15px !important;
+    margin-right: 8px !important;
   }
 
   .receipt-container .form-row label:last-child {
-    margin-left: 15px !important;
+    margin-left: 8px !important;
   }
 
   /* Single field rows should span full width */
@@ -930,12 +938,31 @@ body {
     min-width: 400px !important;
   }
 
-  /* Two-field rows: Customer Name & S/O D/O W/O */
+  /* Mobile field proper alignment */
+  .receipt-container .form-row input[name="mobile"] {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    text-align: left !important;
+  }
+
+  /* Two-field rows: Customer Name & S/O D/O W/O - True 50/50 split */
   .receipt-container .customer-info .form-row:first-child {
     display: flex !important;
     flex-direction: row !important;
-    justify-content: space-between !important;
-    gap: 20px !important;
+    gap: 0px !important;
+    align-items: baseline !important;
+  }
+
+  .receipt-container .customer-info .form-row:first-child label:first-child {
+    flex: 1 !important;
+    width: 50% !important;
+    margin-right: 10px !important;
+  }
+
+  .receipt-container .customer-info .form-row:first-child label:last-child {
+    flex: 1 !important;
+    width: 50% !important;
+    margin-left: 10px !important;
   }
 
   /* Two-field rows: Mobile & Token Expiry Date */
@@ -946,12 +973,24 @@ body {
     gap: 20px !important;
   }
 
-  /* Two-field rows: Reference Name & Site Name */
+  /* Two-field rows: Reference Name & Site Name - True 50/50 split */
   .receipt-container .customer-info .form-row:last-child {
     display: flex !important;
     flex-direction: row !important;
-    justify-content: space-between !important;
-    gap: 20px !important;
+    gap: 0px !important;
+    align-items: baseline !important;
+  }
+
+  .receipt-container .customer-info .form-row:last-child label:first-child {
+    flex: 1 !important;
+    width: 50% !important;
+    margin-right: 10px !important;
+  }
+
+  .receipt-container .customer-info .form-row:last-child label:last-child {
+    flex: 1 !important;
+    width: 50% !important;
+    margin-left: 10px !important;
   }
 
   /* Single field rows: Address & Received Amount */
@@ -990,56 +1029,79 @@ body {
   .relation-type-button {
     display: none !important;
   }
-  
+
   /* Show only the relation label in print */
   .relation-label {
     display: inline !important;
   }
-  
+
   /* Hide expiry note in print */
   .expiry-note {
     display: none !important;
   }
 
-  /* Payment section - show actual input values */
+  /* Hide site dropdown, show selected value only */
+  .site-select {
+    border: none !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    font-size: 15px !important;
+    padding: 3px 0 !important;
+    border-bottom: 1px solid black !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    min-width: 0 !important;
+  }
+
+  /* Hide original payment grid in print */
   .payment-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 15px !important;
+    display: none !important;
+  }
+
+  /* Show print-specific payment display */
+  .print-payment-display {
+    display: block !important;
     margin-bottom: 15px !important;
   }
 
-  /* Show all original payment sections */
-  .payment-left,
-  .payment-middle,
-  .payment-right {
+  .print-payment-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+    font-size: 15px !important;
+  }
+
+  .print-payment-methods {
+    margin-top: 10px !important;
+  }
+
+  .print-payment-methods>span {
+    font-weight: bold !important;
+    font-size: 15px !important;
+    margin-bottom: 5px !important;
     display: block !important;
+  }
+
+  .payment-methods-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .payment-methods-list span {
+    font-size: 18px !important;
+    margin-bottom: 5px !important;
+    padding: 5px !important;
   }
 
   /* Keep payment section with footer */
   .payment-section {
     page-break-after: avoid !important;
-  }
-
-  .payment-left label,
-  .payment-middle label,
-  .payment-right label {
-    display: block !important;
-    margin-bottom: 8px !important;
-    font-size: 13px !important;
-  }
-
-  .payment-left input,
-  .payment-middle input,
-  .payment-right input[type="text"] {
-    border: none !important;
-    border-bottom: 1px solid black !important;
-    background: transparent !important;
-    color: black !important;
-    font-size: 13px !important;
-    padding: 3px 0 !important;
-    width: 100% !important;
-    min-width: 120px !important;
   }
 
   /* Remove static content - show actual input values instead */
@@ -1119,7 +1181,7 @@ body {
   background: white;
   border: 1px solid #dee2e6;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -1226,34 +1288,34 @@ body {
     padding: 10px;
     gap: 15px;
   }
-  
+
   .receipt-card-header {
     padding: 12px 15px;
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
   }
-  
+
   .receipt-card-content {
     padding: 15px;
   }
-  
+
   .receipt-details {
     grid-template-columns: 1fr;
     gap: 8px;
   }
-  
+
   .detail-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
-  
+
   .detail-row .value {
     text-align: left;
     margin-left: 0;
   }
-  
+
   .detail-row .label {
     min-width: auto;
   }
@@ -1340,11 +1402,47 @@ body {
   font-size: 14px;
 }
 
+/* Site select dropdown */
+.site-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+/* Checkbox labels for payment methods */
+.checkbox-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+/* Read-only receipt number styling */
+.receipt-no-readonly {
+  background-color: #f8f9fa !important;
+  cursor: not-allowed !important;
+  font-weight: bold !important;
+  color: #495057 !important;
+}
+
 /* Token expiry date with auto-calculation */
 .expiry-date-container {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* Hide print-only payment display on screen */
+.print-payment-display {
+  display: none;
 }
 
 .expiry-date-input {
@@ -1412,4 +1510,1074 @@ body {
     align-items: center;
     gap: 8px;
   }
+}
+
+/* Print-o
+nly bottom section with both images */
+.print-bottom-section {
+  display: none;
+  text-align: left;
+  width: 100%;
+}
+
+.print-bottom-left {
+  flex: 1;
+  text-align: left;
+}
+
+.print-bottom-right {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.receipt-bottom-img {
+  max-height: 150px;
+  margin-top: 10px;
+  margin-left: 0;
+}
+
+.receipt-address-img {
+  max-height: 120px;
+  max-width: 200px;
+  margin-top: 10px;
+  margin-right: 0;
+  object-fit: contain;
+}
+
+/* Print styles for bottom section */
+@media print {
+  .print-bottom-section {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    page-break-inside: avoid;
+    page-break-before: avoid;
+    break-inside: avoid;
+    break-before: avoid;
+    width: 100% !important;
+  }
+
+  .print-bottom-left {
+    flex: 1 !important;
+    text-align: left !important;
+  }
+
+  .print-bottom-right {
+    flex: 0 0 auto !important;
+    text-align: right !important;
+  }
+
+  /* Keep footer and bottom images together */
+  .footer-section+.print-bottom-section {
+    page-break-before: avoid !important;
+  }
+}
+
+/*
+ Improved checkbox styling for payment methods */
+@media print {
+  .payment-methods-list span {
+    font-size: 20px !important;
+    font-weight: bold !important;
+    margin-bottom: 8px !important;
+    padding: 8px !important;
+    letter-spacing: 1px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Make checkboxes more prominent */
+  .payment-methods-list span:before {
+    font-size: 22px !important;
+    margin-right: 8px !important;
+  }
+}
+
+/* Screen checkbox styling improvements */
+@media screen {
+  .checkbox-label {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 8px 12px !important;
+    margin-bottom: 12px !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 6px !important;
+    background: #f8f9fa !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .checkbox-label:hover {
+    background: #e9ecef !important;
+    border-color: #007bff !important;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 10px !important;
+    transform: scale(1.3) !important;
+    cursor: pointer !important;
+  }
+
+  .checkbox-label input[type="checkbox"]:checked {
+    accent-color: #007bff !important;
+  }
+}
+
+/*
+ Fix print layout issues */
+@media print {
+
+  /* 1. Keep "Payment Methods:" bold, but make options (Cash, Cheque, RTGS/NEFT) normal weight */
+  .print-payment-methods>span:first-child {
+    font-weight: bold !important;
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+    display: block !important;
+  }
+
+  /* Remove bold from payment method options */
+  .payment-method-item {
+    font-weight: normal !important;
+  }
+
+  /* 2. Prevent Basic Rate from wrapping - keep on same line */
+  .receipt-container .customer-info .form-row:nth-child(6) {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    gap: 15px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) label {
+    flex: 1 !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) input {
+    min-width: 120px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 3. Site Name should take 50% width, not wrap */
+  .receipt-container .customer-info .form-row:nth-child(5) label:last-child {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    margin-left: 10px !important;
+    min-width: 0 !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(5) label:last-child input,
+  .receipt-container .customer-info .form-row:nth-child(5) label:last-child select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure Reference Name also takes 50% */
+  .receipt-container .customer-info .form-row:nth-child(5) label:first-child {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    margin-right: 10px !important;
+    min-width: 0 !important;
+  }
+
+  /* Fix Plot No, Plot Size, Basic Rate row - prevent wrapping */
+  .receipt-container .customer-info .form-row:nth-child(6) {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) label {
+    flex: 1 !important;
+    min-width: 0 !important;
+    margin: 0 5px !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) label:first-child {
+    margin-left: 0 !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) label:last-child {
+    margin-right: 0 !important;
+  }
+}
+
+/* 
+Show signature box in print */
+@media print {
+  .signature {
+    display: block !important;
+    text-align: right !important;
+    margin-top: 30px !important;
+    width: 100% !important;
+  }
+
+  .signature p {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    margin-bottom: 10px !important;
+  }
+
+  .signature-box {
+    display: block !important;
+    border: none !important;
+    height: 60px !important;
+    width: 200px !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: 5px !important;
+    background: white !important;
+  }
+
+  .signature-box p {
+    font-size: 11px !important;
+    font-weight: normal !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+}
+
+/* Fix mobile field spacing and payment method text weight */
+@media print {
+
+  /* Remove extra spacing from mobile field */
+  .receipt-container .form-row input[name="mobile"] {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    text-align: left !important;
+    text-indent: 0 !important;
+  }
+
+  /* Ensure mobile label has no extra padding */
+  .receipt-container .customer-info .form-row:nth-child(3) label:first-child {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* Make Cash, Cheque, RTGS/NEFT text normal weight (not bold) */
+  .payment-method-item {
+    font-weight: normal !important;
+    font-size: 16px !important;
+  }
+
+  /* Ensure large checkbox symbols are not bold */
+  .large-checkbox {
+    font-weight: normal !important;
+    font-size: 28px !important;
+  }
+
+  /* Override any bold styling on payment method text */
+  .payment-methods-list span {
+    font-weight: normal !important;
+  }
+
+  .payment-methods-list .payment-method-item {
+    font-weight: normal !important;
+  }
+}
+
+/* F
+ix Site Name wrapping - target the correct row */
+@media print {
+
+  /* Target the row with Reference Name and Site Name (form-half classes) */
+  .receipt-container .customer-info .form-row:has(.form-half) {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    gap: 15px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Alternative targeting - target labels with form-half class */
+  .form-half {
+    flex: 0 0 40% !important;
+    width: 40% !important;
+    min-width: 0 !important;
+    margin: 0 1% !important;
+  }
+
+  .form-half:first-child {
+    margin-left: 0 !important;
+  }
+
+  .form-half:last-child {
+    margin-right: 0 !important;
+  }
+
+  /* Ensure inputs in form-half don't overflow */
+  .form-half input,
+  .form-half select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Specific fix for site select dropdown */
+  .site-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Fix Re
+ference Name and Site Name wrapping - force same line */
+@media print {
+
+  /* Target the specific row with Reference Name and Site Name */
+  .receipt-container .customer-info .form-row:nth-last-child(2) {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+  }
+
+  /* Force Reference Name to take smaller width */
+  .receipt-container .customer-info .form-row:nth-last-child(2) label:first-child {
+    flex: 0 0 40% !important;
+    width: 40% !important;
+    min-width: 0 !important;
+    margin-right: 5px !important;
+    margin-left: 0 !important;
+  }
+
+  /* Force Site Name to take smaller width */
+  .receipt-container .customer-info .form-row:nth-last-child(2) label:last-child {
+    flex: 0 0 40% !important;
+    width: 40% !important;
+    min-width: 0 !important;
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+  }
+
+  /* Ensure inputs don't overflow */
+  .receipt-container .customer-info .form-row:nth-last-child(2) input,
+  .receipt-container .customer-info .form-row:nth-last-child(2) select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Override any conflicting styles */
+  .receipt-container .form-row label.form-half {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+  }
+}
+
+/* Direct fix for Reference Name and Site Name wrapping */
+@media print {
+
+  /* Override all previous targeting - use more direct approach */
+  .receipt-container .form-row:has(.form-half),
+  .receipt-container .customer-info .form-row:last-of-type {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: baseline !important;
+    gap: 15px !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Target labels with form-half class directly */
+  .receipt-container label.form-half {
+    flex: 0 0 35% !important;
+    width: 35% !important;
+    min-width: 0 !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    margin: 0 !important;
+  }
+
+  .receipt-container label.form-half:first-child {
+    margin-right: 15px !important;
+  }
+
+  .receipt-container label.form-half:last-child {
+    margin-left: 15px !important;
+  }
+
+  /* Ensure inputs in form-half labels fit properly */
+  .receipt-container label.form-half input,
+  .receipt-container label.form-half select {
+    flex: 1 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: auto !important;
+  }
+
+  /* Force the specific row structure */
+  .receipt-container .customer-info>.form-row:last-child {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+  }
+}
+
+/* Ul
+tra-specific fix for Reference Name and Site Name */
+@media print {
+
+  /* Nuclear option - override everything for this specific row */
+  .receipt-container .customer-info .form-row:last-child,
+  .receipt-container .customer-info>div:last-child {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    width: 100% !important;
+    gap: 2px !important;
+  }
+
+  /* Force inline display for the labels in the last row */
+  .receipt-container .customer-info .form-row:last-child label {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    flex: 0 0 40% !important;
+    width: 40% !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Specific targeting for Reference Name input */
+  .receipt-container input[name="referenceName"] {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Specific targeting for Site Name select */
+  .receipt-container select[name="siteName"] {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/*
+ Final fix - minimal gap for Reference Name and Site Name */
+@media print {
+
+  /* Remove all gaps and margins that cause wrapping */
+  .receipt-container .customer-info .form-row:last-child {
+    gap: 0px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .receipt-container .customer-info .form-row:last-child label {
+    margin: 0 2px !important;
+    padding: 0 !important;
+  }
+
+  .receipt-container .customer-info .form-row:last-child label:first-child {
+    margin-right: 5px !important;
+    margin-left: 0 !important;
+  }
+
+  .receipt-container .customer-info .form-row:last-child label:last-child {
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* Hid
+e calendar icons in print - show only date values */
+@media print {
+
+  /* Hide calendar icons from date inputs */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-outer-spin-button {
+    display: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  /* Firefox date picker icon */
+  input[type="date"]::-moz-calendar-picker-indicator {
+    display: none !important;
+  }
+
+  /* Style date inputs to look like regular text in print */
+  input[type="date"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid black !important;
+    padding: 3px 0 !important;
+    font-size: 13px !important;
+    color: black !important;
+  }
+
+  /* Ensure date values are visible and formatted properly */
+  input[type="date"]:valid {
+    color: black !important;
+    background: transparent !important;
+  }
+
+  input[type="date"]:invalid {
+    color: transparent !important;
+  }
+}
+
+/* Increase spacing between form rows in print */
+@media print {
+
+  /* General spacing between all form rows */
+  .receipt-container .form-row {
+    margin-bottom: 18px !important;
+  }
+
+  /* Extra spacing for specific rows */
+  .receipt-container .customer-info .form-row {
+    margin-bottom: 20px !important;
+  }
+
+  /* More spacing after "Received sum of Rupees" row */
+  .receipt-container .customer-info .form-row:nth-child(4) {
+    margin-bottom: 25px !important;
+  }
+
+  /* More spacing after "Reference Name / Site Name" row */
+  .receipt-container .customer-info .form-row:nth-child(5) {
+    margin-bottom: 25px !important;
+  }
+
+  /* Extra spacing for Plot Number row (Plot No, Plot Size, Basic Rate) */
+  .receipt-container .customer-info .form-row:nth-child(6) {
+    margin-bottom: 30px !important;
+    margin-top: 5px !important;
+  }
+
+  /* Spacing before payment section */
+  .payment-section {
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
+  }
+
+  /* Spacing for payment display rows */
+  .print-payment-row {
+    margin-bottom: 20px !important;
+  }
+
+  .print-payment-methods {
+    margin-top: 15px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Spacing between payment method items */
+  .payment-method-item {
+    margin-bottom: 12px !important;
+    padding: 6px 0 !important;
+  }
+
+  /* Extra spacing before footer */
+  .footer-section {
+    margin-top: 35px !important;
+    padding-top: 20px !important;
+  }
+
+}
+
+/* EXTRA SPACING - More space between all sections */
+@media print {
+
+  /* Increase all form row spacing significantly */
+  .receipt-container .form-row {
+    margin-bottom: 30px !important;
+  }
+
+  .receipt-container .customer-info .form-row {
+    margin-bottom: 35px !important;
+  }
+
+  /* Much more spacing after key rows */
+  .receipt-container .customer-info .form-row:nth-child(4) {
+    margin-bottom: 40px !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(5) {
+    margin-bottom: 40px !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) {
+    margin-bottom: 45px !important;
+    margin-top: 15px !important;
+  }
+
+  /* More spacing around payment section */
+  .payment-section {
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+    padding: 15px 0 !important;
+  }
+
+  .print-payment-row {
+    margin-bottom: 35px !important;
+  }
+
+  .print-payment-methods {
+    margin-top: 30px !important;
+    margin-bottom: 35px !important;
+  }
+
+  .payment-method-item {
+    margin-bottom: 18px !important;
+    padding: 10px 0 !important;
+  }
+
+  /* Much more spacing before footer */
+  .footer-section {
+    margin-top: 50px !important;
+    padding-top: 30px !important;
+  }
+
+  /* Additional section spacing */
+  .receipt-container .receipt-info {
+    margin-bottom: 40px !important;
+  }
+
+  .receipt-container .customer-info {
+    margin-bottom: 45px !important;
+  }
+
+  /* Increase line height for better readability */
+  .receipt-container {
+    line-height: 1.8 !important;
+  }
+
+  .receipt-container label {
+    line-height: 1.6 !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* P
+rint Modal Styles */
+.print-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.print-modal-content {
+  background: white;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90%;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.print-controls {
+  padding: 15px 20px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.print-controls button {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.print-controls .print-btn {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.print-controls .print-btn:hover {
+  background: #218838;
+}
+
+.print-controls .close-btn {
+  background: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+
+.print-controls .close-btn:hover {
+  background: #545b62;
+}
+
+/* Hide print controls when printing */
+@media print {
+  .print-modal {
+    position: static !important;
+    background: white !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  .print-modal-content {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  .print-controls {
+    display: none !important;
+  }
+}
+
+/* Print button styles for receipts list */
+.receipt-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.print-receipt-btn {
+  background: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+}
+
+.print-receipt-btn:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+.print-receipt-btn:disabled {
+  background: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Ensure receipt data displays properly in print modal */
+.print-modal .receipt-container input[readonly] {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #000 !important;
+  color: #000 !important;
+  font-size: 13px !important;
+}
+
+.print-modal .receipt-container {
+  padding: 20px !important;
+}
+
+/* Receip
+t card header improvements */
+.receipt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.receipt-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.receipt-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.print-receipt-btn {
+  background: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.print-receipt-btn:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.print-receipt-btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsive for receipt actions */
+@media (max-width: 768px) {
+  .receipt-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .receipt-header-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .print-receipt-btn {
+    font-size: 11px;
+
+    padding: 4px 8px;
+  }
+}
+
+/* Red
+uce line spacing in print - COMPACT VERSION */
+@media print {
+
+  /* Reduce all form row spacing significantly */
+  .receipt-container .form-row {
+    margin-bottom: 15px !important;
+  }
+
+  .receipt-container .customer-info .form-row {
+    margin-bottom: 18px !important;
+  }
+
+  /* Reduce spacing after key rows */
+  .receipt-container .customer-info .form-row:nth-child(4) {
+    margin-bottom: 20px !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(5) {
+    margin-bottom: 20px !important;
+  }
+
+  .receipt-container .customer-info .form-row:nth-child(6) {
+    margin-bottom: 25px !important;
+    margin-top: 5px !important;
+  }
+
+  /* Reduce spacing around payment section */
+  .payment-section {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    padding: 5px 0 !important;
+  }
+
+  .print-payment-row {
+    margin-bottom: 15px !important;
+  }
+
+  .print-payment-methods {
+    margin-top: 12px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .payment-method-item {
+    margin-bottom: 8px !important;
+    padding: 4px 0 !important;
+  }
+
+  /* Reduce spacing before footer */
+  .footer-section {
+    margin-top: 25px !important;
+    padding-top: 15px !important;
+  }
+
+  /* Reduce section spacing */
+  .receipt-container .receipt-info {
+    margin-bottom: 20px !important;
+  }
+
+  .receipt-container .customer-info {
+    margin-bottom: 25px !important;
+  }
+
+  /* Reduce line height for more compact text */
+  .receipt-container {
+    line-height: 1.4 !important;
+  }
+
+  .receipt-container label {
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Reduce spacing in print header */
+  .print-only-header {
+    margin-bottom: 15px !important;
+  }
+
+  /* Reduce spacing in terms section */
+  .terms ul {
+    line-height: 1.3 !important;
+  }
+
+  .terms li {
+    margin-bottom: 3px !important;
+  }
+}
+
+/* F
+ix page break issues - keep content on same page as header */
+@media print {
+
+  /* Remove any page breaks that might cause content to move */
+  .print-only-header {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  .receipt-container {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Ensure receipt info stays with header */
+  .receipt-info {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Keep customer info together */
+  .customer-info {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  /* Reduce top image height if it's causing issues */
+  .print-top-image {
+    margin-bottom: 5px !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .receipt-top-img {
+    max-height: 100px !important;
+  }
+
+  /* Ensure header doesn't take too much space */
+  .print-only-header {
+    margin-bottom: 10px !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 10px !important;
+  }
+
+  .print-only-header h1:first-child {
+    margin-top: 0 !important;
+    margin-bottom: 5px !important;
+  }
+
+  .print-only-header h1:last-child {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Remove any orphans/widows that cause page breaks */
+  .receipt-container * {
+    orphans: 1 !important;
+    widows: 1 !important;
+  }
+
+  /* Force content to stay together */
+  .receipt-info,
+  .customer-info,
+  .payment-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+/* Hide
+ form actions in print modal */
+@media print {
+  .print-modal .form-actions {
+    display: none !important;
+  }
+
+  .printable-receipt-wrapper .form-actions {
+    display: none !important;
+  }
+}
+
+/* Make print modal inputs read-only styled */
+.print-modal input[readonly] {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #000 !important;
+  color: #000 !important;
+  cursor: default !important;
+}
+
+.print-modal select[disabled] {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #000 !important;
+  color: #000 !important;
+  cursor: default !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
 }

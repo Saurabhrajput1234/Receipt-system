@@ -2777,6 +2777,7 @@ ncrease checkbox font size for PrintableReceipt */
   align-items: center;
   min-height: 100vh;
   background-color: #f5f5f5;
+  width: 100vw;
 }
 
 .auth-container {
@@ -2827,6 +2828,7 @@ ncrease checkbox font size for PrintableReceipt */
 
 .auth-container button:hover {
   background-color: #357abD;
+  color: black;
 }
 
 .auth-container button:disabled {

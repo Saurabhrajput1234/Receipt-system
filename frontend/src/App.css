@@ -868,6 +868,10 @@ body {
   .form-row:nth-child(4) input {
     width: 70% !important;
     min-width: 70% !important;
+    font-size: 18px !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
   }
 
   /* Row 6: Reference Name and Site Name - Same Line */
@@ -876,6 +880,7 @@ body {
     justify-content: space-between !important;
     align-items: baseline !important;
     margin-bottom: 20px !important;
+    gap: 10px !important; /* Reduced gap between reference name and site name */
   }
 
   /* Labels styling - Readable */
@@ -943,9 +948,14 @@ body {
     min-width: auto !important;
   }
 
-  .form-row input {
+  .form-row input, .form-row select {
     min-width: 200px !important;
     flex-shrink: 0 !important;
+  }
+  
+  /* Ensure site name has enough width */
+  .form-row:nth-child(5) .form-half:last-child select {
+    min-width: 220px !important;
   }
 
   /* Specific spacing for two-field rows - Reduced margins */

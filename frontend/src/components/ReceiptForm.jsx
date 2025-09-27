@@ -442,7 +442,7 @@ Buddha Nagar, Uttar Pradesh - 201310
                 className="site-select"
               >
                 <option value="">Select Site</option>
-                <option value="Hare H.K.T-2">Hare Krishna Township-Phase 2</option>
+                <option value="Harekrishna Township-2">Harekrishna Township-2</option>
               </select>
             </label>
           </div>

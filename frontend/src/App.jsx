@@ -3,15 +3,17 @@ import "./App.css";
 import ReceiptForm from "./components/ReceiptForm";
 import ReceiptsList from "./components/ReceiptsList";
 import PrintReceiptModal from "./components/PrintReceiptModal";
+import Auth from "./components/Auth";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-function App() {
+function AppContent() {
+  const { user, logout } = useAuth();
   const [currentView, setCurrentView] = useState("form"); // 'form' or 'list'
   const [currentReceiptType, setCurrentReceiptType] = useState("token"); // 'token', 'banking', 'emi'
   const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [printReceiptId, setPrintReceiptId] = useState(null);
 
-  // API base URL - use environment variable or fallback
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 
     (import.meta.env.VITE_NODE_ENV === "production"
       ? "http://localhost:5000/api"
@@ -19,11 +21,14 @@ function App() {
 
   const handleSubmit = async (receiptData) => {
     setLoading(true);
-
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`${API_BASE}/receipts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(receiptData),
       });
 
@@ -33,13 +38,17 @@ function App() {
         alert("Receipt saved successfully!");
         if (currentView === "list") fetchReceipts();
         return true;
+      } else if (response.status === 401) {
+        alert("Your session has expired. Please login again.");
+        logout();
+        return false;
       } else {
         alert("Error saving receipt: " + (result.message || "Unknown error"));
         return false;
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to save receipt. Please check if the server is running.");
+      alert("Failed to save receipt. Make sure the server is running.");
       return false;
     } finally {
       setLoading(false);
@@ -49,7 +58,19 @@ function App() {
   const fetchReceipts = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/receipts`);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE}/receipts`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        alert("Your session has expired. Please login again.");
+        logout();
+        return;
+      }
+
       const result = await response.json();
 
       if (response.ok && result.success) {
@@ -84,10 +105,10 @@ function App() {
   };
 
   useEffect(() => {
-    if (currentView === "list") {
+    if (user && currentView === "list") {
       fetchReceipts();
     }
-  }, [currentView]);
+  }, [currentView, user]);
 
   const getReceiptTypeLabel = (type) => {
     switch (type) {
@@ -98,32 +119,36 @@ function App() {
     }
   };
 
+  if (!user) {
+    return <Auth onAuthenticated={() => {}} />; // Make sure Auth sets user in context
+  }
+
   return (
     <div className="app-container">
-      <div className="app-header">
+      <header className="app-header">
         <div className="header-content">
           <div className="logo-section">
             <img 
               src="/logo.png" 
               alt="Company Logo" 
               className="company-logo"
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
+              onError={(e) => { e.target.style.display = 'none'; }}
             />
           </div>
           <div className="company-info">
             <h1>{import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}</h1>
             <p className="address">
-            037UG, BUILDERS SCHEME,<br />
-OMAXE ACRADE GOLF LINK-1, Alpha Greater Noida, Noida, Gautam <br />
-Buddha Nagar, Uttar Pradesh - 201310
+              037UG, BUILDERS SCHEME,<br />
+              OMAXE ACRADE GOLF LINK-1, Alpha Greater Noida, Noida, Gautam <br />
+              Buddha Nagar, Uttar Pradesh - 201310
             </p>
+          </div>
+          <div className="logout-container">
+            <button onClick={logout} className="logout-btn">Logout</button>
           </div>
         </div>
 
         <div className="nav-buttons">
-          {/* Receipt Type Selection */}
           <div className="receipt-type-selector">
             <label>Receipt Type:</label>
             <select
@@ -137,7 +162,6 @@ Buddha Nagar, Uttar Pradesh - 201310
             </select>
           </div>
 
-          {/* View Navigation */}
           <button
             className={currentView === "form" ? "active" : ""}
             onClick={() => setCurrentView("form")}
@@ -154,32 +178,43 @@ Buddha Nagar, Uttar Pradesh - 201310
             Test Connection
           </button>
         </div>
-      </div>
+      </header>
 
-      {currentView === "list" ? (
-        <ReceiptsList 
-          receipts={receipts}
-          loading={loading}
-          onRefresh={fetchReceipts}
-          onCreateNew={() => setCurrentView("form")}
-          onPrintReceipt={(receiptId) => setPrintReceiptId(receiptId)}
-        />
-      ) : (
-        <ReceiptForm 
-          receiptType={currentReceiptType}
-          onSubmit={handleSubmit}
-          loading={loading}
-        />
-      )}
+      <main>
+        {currentView === "form" ? (
+          <ReceiptForm
+            onSubmit={handleSubmit}
+            loading={loading}
+            receiptType={currentReceiptType}
+            receiptTypeLabel={getReceiptTypeLabel(currentReceiptType)}
+          />
+        ) : (
+          <ReceiptsList
+            receipts={receipts}
+            loading={loading}
+            onRefresh={fetchReceipts}
+            onPrintReceipt={(id) => setPrintReceiptId(id)}
+            onCreateNew={() => setCurrentView("form")}
+          />
+        )}
+      </main>
 
-      {/* Print Modal */}
       {printReceiptId && (
         <PrintReceiptModal
           receiptId={printReceiptId}
           onClose={() => setPrintReceiptId(null)}
+          apiBase={API_BASE}
         />
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

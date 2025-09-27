@@ -37,7 +37,19 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
 
   const fetchNextReceiptNumber = async () => {
     try {
-      const response = await fetch(`${API_BASE}/receipts/next/number`);
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.error("No authentication token found");
+        return "1";
+      }
+
+      const response = await fetch(`${API_BASE}/receipts/next/number`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const result = await response.json();
 
       if (response.ok && result.success) {
@@ -557,6 +569,8 @@ Buddha Nagar, Uttar Pradesh - 201310
   </div>
 
 <div className="payment-methods-row">
+  <h3>Payment Methods:</h3>
+   
   <span className="print-checkbox">
     <span className={formData.cashChecked ? "checked" : ""}></span> Cash
   </span>
@@ -624,7 +638,7 @@ Buddha Nagar, Uttar Pradesh - 201310
 
       {/* Print-only bottom images */}
       <div className="print-bottom-section">
-        <div style={{ marginTop: "80px" }} className="print-bottom-left">
+        <div style={{ marginTop: "140px" }} className="print-bottom-left">
           <img
             src="/back.jpg"
             alt="Receipt Bottom Design"

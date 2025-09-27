@@ -1,10 +1,11 @@
 import PrintableReceipt from "./PrintableReceipt";
 
-const PrintReceiptModal = ({ receiptId, onClose }) => {
+const PrintReceiptModal = ({ receiptId, onClose, apiBase }) => {
   return (
     <PrintableReceipt
       receiptId={receiptId}
       onClose={onClose}
+      apiBase={apiBase}
     />
   );
 };

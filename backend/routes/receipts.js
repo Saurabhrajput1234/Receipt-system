@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Receipt = require('../models/Receipt');
+const authMiddleware = require('../middleware/auth');
+
+// Apply auth middleware to all routes
+router.use(authMiddleware);
 
 // Create a new receipt
 router.post('/', async (req, res) => {

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
-const PrintableReceipt = ({ receiptId, onClose }) => {
+const PrintableReceipt = ({ receiptId, onClose, apiBase }) => {
   const [receiptData, setReceiptData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // API base URL
-  const API_BASE =
+  const API_BASE = apiBase ||
     import.meta.env.VITE_API_BASE_URL ||
     (import.meta.env.VITE_NODE_ENV === "production"
       ? "http://localhost:5000/api"
@@ -105,7 +105,14 @@ const PrintableReceipt = ({ receiptId, onClose }) => {
     const fetchReceipt = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_BASE}/receipts/${receiptId}`);
+        // Get token from localStorage
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch(`${API_BASE}/receipts/${receiptId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         const result = await response.json();
 
         if (response.ok && result.success) {

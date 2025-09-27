@@ -338,11 +338,11 @@ Buddha Nagar, Uttar Pradesh - 201310
           onChange={handleInputChange}
           className="expiry-date-input"
         />
-        <span className="expiry-note">
+        {/* <h3 className="expiry-note">
           {formData.date && formData.tokenExpiryDate
             ? "(Auto: +7 days)"
             : "(Manual entry)"}
-        </span>
+        </h3> */}
       </div>
     </label>
   </div>

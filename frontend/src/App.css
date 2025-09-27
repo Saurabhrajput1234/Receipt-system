@@ -1313,6 +1313,11 @@ body {
     padding: 10px;
     gap: 15px;
   }
+  .receipt-row, .form-row {
+    
+    display: block !important;
+    
+}
 
   .receipt-card-header {
     padding: 12px 15px;

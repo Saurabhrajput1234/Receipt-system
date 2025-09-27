@@ -6,13 +6,22 @@ const jwt = require("jsonwebtoken");
 // Register a new user
 router.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, secretKey } = req.body;
 
     // Validate input
     if (!email || !password) {
       return res.status(400).json({
         success: false,
         message: "Email and password are required",
+      });
+    }
+    
+    // Validate company secret key
+    const COMPANY_SECRET_KEY = process.env.COMPANY_SECRET_KEY || "subhsankalp2023";
+    if (!secretKey || secretKey !== COMPANY_SECRET_KEY) {
+      return res.status(403).json({
+        success: false,
+        message: "Invalid company secret key",
       });
     }
 

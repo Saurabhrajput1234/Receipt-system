@@ -5,6 +5,7 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [secretKey, setSecretKey] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -21,7 +22,13 @@ const Auth = () => {
       if (isLogin) {
         result = await login(email, password);
       } else {
-        result = await register(email, password);
+        // Check if secret key is provided for registration
+        if (!secretKey) {
+          setError('Company secret key is required for registration');
+          setLoading(false);
+          return;
+        }
+        result = await register(email, password, secretKey);
       }
       
       if (!result.success) {
@@ -64,6 +71,19 @@ const Auth = () => {
               required
             />
           </div>
+          
+          {!isLogin && (
+            <div className="form-group">
+              <label htmlFor="secretKey">Company Secret Key</label>
+              <input
+                type="password"
+                id="secretKey"
+                value={secretKey}
+                onChange={(e) => setSecretKey(e.target.value)}
+                required={!isLogin}
+              />
+            </div>
+          )}
           
           <button type="submit" disabled={loading}>
             {loading ? 'Processing...' : isLogin ? 'Login' : 'Register'}

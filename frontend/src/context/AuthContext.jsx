@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password) => {
+  const register = async (email, password, secretKey) => {
     try {
       const API_BASE = import.meta.env.VITE_API_BASE_URL || 
         (import.meta.env.VITE_NODE_ENV === "production"
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, secretKey }),
       });
 
       const data = await response.json();

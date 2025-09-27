@@ -65,6 +65,9 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  position: absolute;
+  right: -21px;
+  top: -21px;
 }
 
 .logout-btn:hover {
@@ -554,7 +557,6 @@ body {
   }
 
   .signature-box {
-    border: 1px solid black;
     height: 50px;
     display: flex;
     align-items: flex-end;
@@ -1393,7 +1395,7 @@ body {
   border-radius: 4px;
   background: #007bff;
   color: white;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   min-width: 70px;
@@ -1413,7 +1415,7 @@ body {
 .relation-label {
   font-weight: 600;
   color: #495057;
-  font-size: 20px;
+  font-size: 14px;
   min-width: 40px;
 }
 
@@ -1431,7 +1433,7 @@ body {
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 14px;
   background: white;
 }
 
@@ -1529,8 +1531,8 @@ body {
   }
 
   .payment-right label {
-    flex-direction: row !important;
-    align-items: center;
+    flex-direction: column !important;
+    align-items: start;
     gap: 8px;
   }
 }

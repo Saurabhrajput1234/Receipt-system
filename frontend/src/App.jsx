@@ -115,9 +115,9 @@ function App() {
           <div className="company-info">
             <h1>{import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}</h1>
             <p className="address">
-              The Grover Square, 2nd Floor, Near Maruti Showroom,
-              <br />
-              Sec-49, Barohi, Gautam Budh Nagar.
+            037UG, BUILDERS SCHEME,<br />
+OMAXE ACRADE GOLF LINK-1, Alpha Greater Noida, Noida, Gautam <br />
+Buddha Nagar, Uttar Pradesh - 201310
             </p>
           </div>
         </div>

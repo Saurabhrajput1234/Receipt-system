@@ -277,6 +277,11 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
             <h1>
               {import.meta.env.VITE_APP_NAME || "SUBH SANKALP ESTATE PVT. LTD."}
             </h1>
+            <p className="address">
+            037UG, BUILDERS SCHEME,<br />
+OMAXE ACRADE GOLF LINK-1, Alpha Greater Noida, Noida, Gautam <br />
+Buddha Nagar, Uttar Pradesh - 201310
+            </p>
             <br />
 
             <h1>{getReceiptTitle()}</h1>
@@ -286,56 +291,51 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
 
       <form onSubmit={handleSubmit} className="receipt-form">
         {/* Receipt info */}
-        <div className="receipt-info">
-          <div className="receipt-row">
-            <label>
-              Receipt No.
-              <div className="receipt-no-container">
-                <input
-                  type="text"
-                  name="receiptNo"
-                  value={formData.receiptNo}
-                  readOnly
-                  className="receipt-no-readonly"
-                />
-                {/* <button
-                  type="button"
-                  className="refresh-receipt-btn"
-                  onClick={loadNextReceiptNumber}
-                  title="Get next receipt number"
-                >
-                  🔄
-                </button> */}
-              </div>
-            </label>
-            <label>
-              Date
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Token Expiry Date:
-              <div className="expiry-date-container">
-                <input
-                  type="date"
-                  name="tokenExpiryDate"
-                  value={formData.tokenExpiryDate}
-                  onChange={handleInputChange}
-                  className="expiry-date-input"
-                />
-                <span className="expiry-note">
-                  {formData.date && formData.tokenExpiryDate
-                    ? "(Auto: +7 days)"
-                    : "(Manual entry)"}
-                </span>
-              </div>
-            </label>
-          </div>
-        </div>
+       <div className="receipt-info">
+  <div className="receipt-row">
+    <label className="receipt-no-label">
+      Receipt No.
+      <div className="receipt-no-container">
+        <input
+          type="text"
+          name="receiptNo"
+          value={formData.receiptNo}
+          readOnly
+          className="receipt-no-readonly"
+        />
+      </div>
+    </label>
+
+    <label className="date-label">
+      Date
+      <input 
+        type="date"
+        name="date"
+        value={formData.date}
+        onChange={handleInputChange}
+      />
+    </label>
+
+    <label className="expiry-label">
+      Token Expiry Date:
+      <div className="expiry-date-container">
+        <input
+          type="date"
+          name="tokenExpiryDate"
+          value={formData.tokenExpiryDate}
+          onChange={handleInputChange}
+          className="expiry-date-input"
+        />
+        <span className="expiry-note">
+          {formData.date && formData.tokenExpiryDate
+            ? "(Auto: +7 days)"
+            : "(Manual entry)"}
+        </span>
+      </div>
+    </label>
+  </div>
+</div>
+
 
         {/* Customer info */}
         <div className="customer-info">
@@ -436,9 +436,9 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
           </div>
 
           <div className="form-row">
-            <label>
+            <label >
               Plot No:
-              <input
+              <input className="plot-input"
                 type="text"
                 name="plotVillaNo"
                 value={formData.plotVillaNo}
@@ -447,7 +447,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
             </label>
             <label>
               Plot Size Sq. (yd.):
-              <input
+              <input className="plot-input"
                 type="text"
                 name="plotSize"
                 value={formData.plotSize}
@@ -456,7 +456,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
             </label>
             <label>
               Basic Rate:
-              <input
+              <input className="plot-input"
                 type="text"
                 name="basicRate"
                 value={formData.basicRate}
@@ -523,7 +523,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
               )}
               <label>
                 RTGS / NEFT:
-                <input
+                <input className="rtgs-input"
                   type="text"
                   name="rtgsNeft"
                   value={formData.rtgsNeft}
@@ -543,29 +543,39 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
           </div>
 
           {/* Print-only payment display */}
-          <div className="print-payment-display">
-            <div className="print-payment-row">
-              <span>Other: {formData.other || "___________"}</span>
-              <span>Amount (Rs.): {formData.amount || "___________"}</span>
-              <span>
-                Rest Amount (Rs.): {formData.restAmount || "___________"}
-              </span>
-            </div>
-            <div className="print-payment-methods">
-              <span>Payment Methods:</span>
-              <div className="payment-methods-list">
-                <span>{formData.cashChecked ? "☑" : "☐"} Cash</span>
-                <span>
-                  {formData.chequeChecked ? "☑" : "☐"} Cheque{" "}
-                  {formData.chequeNo ? `(No: ${formData.chequeNo})` : ""}
-                </span>
-                <span>
-                  {formData.rtgsNeft && formData.rtgsNeft.trim() ? "☑" : "☐"}{" "}
-                  RTGS/NEFT: {formData.rtgsNeft || "___________"}
-                </span>
-              </div>
-            </div>
-          </div>
+        <div className="print-payment-display">
+  <div className="print-payment-row">
+    <span>
+      Other: <span className="underline-field">{formData.other}</span>
+    </span>
+    <span>
+      Amount (Rs.): <span className="underline-field">{formData.amount}</span>
+    </span>
+    <span>
+      Rest Amount (Rs.): <span className="underline-field">{formData.restAmount}</span>
+    </span>
+  </div>
+
+<div className="payment-methods-row">
+  <span className="print-checkbox">
+    <span className={formData.cashChecked ? "checked" : ""}></span> Cash
+  </span>
+
+  <span className="print-checkbox cheque-field">
+    <span className={formData.chequeChecked ? "checked" : ""}></span> Cheque No:
+    <span className="underline-field">{formData.chequeNo}</span>
+  </span>
+</div>
+
+<div className="payment-methods-row">
+  <span className="print-checkbox rtgs-field">
+    <span className={formData.rtgsNeft?.trim() ? "checked" : ""}></span> RTGS/NEFT:
+    <span className="underline-field">{formData.rtgsNeft}</span>
+  </span>
+</div>
+
+</div>
+
         </div>
 
         {/* Footer */}
@@ -573,8 +583,8 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
           <div className="terms">
             <h4>Terms & Conditions</h4>
             <ul>
-              <li>Token amount will be expire after 7 days</li>
-              <li>Refund applicable within 7 days only</li>
+              <li>Token amount will be expire after 7 days.</li>
+              <li>Refund applicable within 7 days only.</li>
               <li>
                 After token expires,amount can be adjusted only in the next
                 booking (Self,referral), not refunded.
@@ -589,7 +599,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
               </strong>
             </p>
             <div className="signature-box">
-              <p>(Authorised Signatory)</p>
+              <pre>(Authorised Signatory)</pre>
             </div>
           </div>
         </div>
@@ -614,7 +624,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
 
       {/* Print-only bottom images */}
       <div className="print-bottom-section">
-        <div style={{ marginTop: "122px" }} className="print-bottom-left">
+        <div style={{ marginTop: "80px" }} className="print-bottom-left">
           <img
             src="/back.jpg"
             alt="Receipt Bottom Design"

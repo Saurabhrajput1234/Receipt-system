@@ -220,7 +220,12 @@ const PrintableReceipt = ({ receiptId, onClose }) => {
                   {import.meta.env.VITE_APP_NAME ||
                     "SUBH SANKALP ESTATE PVT. LTD."}
                 </h1>
-                <br />
+                   <p className="address">
+            037UG, BUILDERS SCHEME,<br />
+OMAXE ACRADE GOLF LINK-1, Alpha Greater Noida, Noida, Gautam <br />
+Buddha Nagar, Uttar Pradesh - 201310
+            </p>
+            <br />
                 <h1>{getReceiptTitle()}</h1>
               </div>
             </div>
@@ -345,7 +350,10 @@ const PrintableReceipt = ({ receiptId, onClose }) => {
                   Cheque{" "}
                   {receiptData.chequeNo ? `(No: ${receiptData.chequeNo})` : ""}
                 </span>
-                <span className="payment-method-item">
+               
+              </div>
+              <div>
+                 <span className="payment-method-item">
                   <span className="large-checkbox">
                     {receiptData.rtgsNeft &&
                     receiptData.rtgsNeft.toString().trim() !== ""
@@ -386,7 +394,7 @@ const PrintableReceipt = ({ receiptId, onClose }) => {
 
           {/* Print-only bottom images */}
           <div className="print-bottom-section">
-            <div style={{ marginTop: "89px" }} className="print-bottom-left">
+            <div style={{ marginTop: "30px" }} className="print-bottom-left">
               <img
                 src="/back.jpg"
                 alt="Receipt Bottom Design"

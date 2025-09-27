@@ -158,7 +158,7 @@ const ReceiptForm = ({ receiptType, onSubmit, loading, initialData = null, readO
       groupIndex++;
     }
 
-    return result.trim() + " Only";
+    return (result.trim() + " Only").toUpperCase();
   };
 
   const handleInputChange = (e) => {
@@ -411,13 +411,22 @@ Buddha Nagar, Uttar Pradesh - 201310
             </label>
           </div>
           <div className="form-row">
-            <label>
+            <label style={{ whiteSpace: 'nowrap' }}>
               Received sum of Rupees:
               <input
                 type="text"
                 name="receivedAmount"
                 value={formData.receivedAmount}
                 onChange={handleInputChange}
+                style={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                  overflowWrap: 'break-word',
+                  width: '100%',
+                  minWidth: '100%',
+                  height: 'auto',
+                  minHeight: '40px'
+                }}
               />
             </label>
           </div>

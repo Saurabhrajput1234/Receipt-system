@@ -97,7 +97,7 @@ const PrintableReceipt = ({ receiptId, onClose, apiBase }) => {
       groupIndex++;
     }
 
-    return result.trim() + " Only";
+    return (result.trim() + " Only").toUpperCase();
   };
 
   // Fetch receipt data
@@ -294,10 +294,19 @@ Buddha Nagar, Uttar Pradesh - 201310
               </label>
             </div>
             <div className="form-row">
-              <label>
+              <label style={{ whiteSpace: 'nowrap' }}>
                 Received sum of Rupees:
                 <input
                   type="text"
+                  style={{
+                    wordWrap: 'break-word',
+                    whiteSpace: 'normal',
+                    overflowWrap: 'break-word',
+                    width: '100%',
+                    minWidth: '100%',
+                    height: 'auto',
+                    minHeight: '40px'
+                  }}
                   value={
                     receiptData.receivedAmount ||
                     numberToWords(receiptData.amount)

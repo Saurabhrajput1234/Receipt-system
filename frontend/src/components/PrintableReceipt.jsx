@@ -318,11 +318,33 @@ Buddha Nagar, Uttar Pradesh - 201310
             <div className="form-row">
               <label className="form-half">
                 Reference Name:
-                <input type="text" value={receiptData.referenceName} readOnly />
+                <input 
+                  type="text" 
+                  value={receiptData.referenceName} 
+                  readOnly 
+                  style={{
+                    wordWrap: 'break-word',
+                    whiteSpace: 'normal',
+                    overflowWrap: 'break-word',
+                    width: '100%',
+                    minWidth: '100%'
+                  }}
+                />
               </label>
               <label className="form-half">
                 Site Name:
-                <input type="text" value={receiptData.siteName} readOnly />
+                <input 
+                  type="text" 
+                  value={receiptData.siteName} 
+                  readOnly 
+                  style={{
+                    wordWrap: 'break-word',
+                    whiteSpace: 'normal',
+                    overflowWrap: 'break-word',
+                    width: '100%',
+                    minWidth: '100%'
+                  }}
+                />
               </label>
             </div>
             <div className="form-row">

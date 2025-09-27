@@ -431,14 +431,21 @@ Buddha Nagar, Uttar Pradesh - 201310
             </label>
           </div>
           <div className="form-row">
-            <label className="form-half">
+            <label className="">
               Reference Name:
-              <input
+              <input className="reference-input"
                 type="text"
                 name="referenceName"
                 value={formData.referenceName}
                 onChange={handleInputChange}
                 placeholder="Reference Name"
+                style={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                  overflowWrap: 'break-word',
+                  width: '100%',
+                  minWidth: '100%'
+                }}
               />
             </label>
 
@@ -449,9 +456,16 @@ Buddha Nagar, Uttar Pradesh - 201310
                 value={formData.siteName}
                 onChange={handleInputChange}
                 className="site-select"
+                style={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                  overflowWrap: 'break-word',
+                  width: '100%',
+                  minWidth: '100%'
+                }}
               >
                 <option value="">Select Site</option>
-                <option value="Harekrishna Township-2">Harekrishna Township-2</option>
+                <option value="Harekrishna Township-2">Hare krishna Township-Phase 2</option>
               </select>
             </label>
           </div>
@@ -647,7 +661,7 @@ Buddha Nagar, Uttar Pradesh - 201310
 
       {/* Print-only bottom images */}
       <div className="print-bottom-section">
-        <div style={{ marginTop: "140px" }} className="print-bottom-left">
+        <div style={{ marginTop: "120px" }} className="print-bottom-left">
           <img
             src="/back.jpg"
             alt="Receipt Bottom Design"
